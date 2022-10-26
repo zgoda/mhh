@@ -15,9 +15,21 @@ class RecordingCreateScreen extends HookConsumerWidget {
         useTextEditingController(text: DateTime.now().toString());
     final recordSysPressureController = useTextEditingController();
     final recordDiaPressureController = useTextEditingController();
+    final recordPulseController = useTextEditingController();
     return Scaffold(
       appBar: AppBar(
         title: const Text('New Blood Pressure Record'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () async {
+              Navigator.of(context).pop();
+            },
+            style: TextButton.styleFrom(
+              foregroundColor: Theme.of(context).dialogBackgroundColor,
+            ),
+            child: const Text('Save'),
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -38,6 +50,7 @@ class RecordingCreateScreen extends HookConsumerWidget {
             TextField(
               keyboardType: TextInputType.number,
               controller: recordSysPressureController,
+              autofocus: true,
               decoration: const InputDecoration(
                 labelText: 'SYS',
                 hintText: 'Systolic blood pressure (SYS)',
@@ -51,6 +64,16 @@ class RecordingCreateScreen extends HookConsumerWidget {
               decoration: const InputDecoration(
                 labelText: 'DIA',
                 hintText: 'Diastolic blood pressure (DIA)',
+                contentPadding: defaultTextfieldInsets,
+              ),
+            ),
+            defaultFieldSpacer,
+            TextField(
+              keyboardType: TextInputType.number,
+              controller: recordPulseController,
+              decoration: const InputDecoration(
+                labelText: 'Pulse',
+                hintText: 'Heart beat rate (pulse)',
                 contentPadding: defaultTextfieldInsets,
               ),
             ),
