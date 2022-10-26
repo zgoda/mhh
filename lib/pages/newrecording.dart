@@ -2,6 +2,7 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mhh/models.dart';
 
 const defaultTextfieldInsets = EdgeInsets.fromLTRB(20, 15, 20, 15);
 const defaultFieldSpacer = SizedBox(height: 25);
@@ -11,11 +12,15 @@ class RecordingCreateScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final recordDateController =
-        useTextEditingController(text: DateTime.now().toString());
+    final now = DateTime.now();
+    final recordDateController = useTextEditingController(text: now.toString());
     final recordSysPressureController = useTextEditingController();
     final recordDiaPressureController = useTextEditingController();
     final recordPulseController = useTextEditingController();
+    final recordTimeOfDay = useState(RecordTimeOfDay.getByTime(now));
+    final timesOfDay = RecordTimeOfDay.values.map(
+      (e) => e.value,
+    );
     return Scaffold(
       appBar: AppBar(
         title: const Text('New Blood Pressure Record'),
@@ -45,6 +50,24 @@ class RecordingCreateScreen extends HookConsumerWidget {
               ),
               firstDate: DateTime(2020),
               lastDate: DateTime(2100),
+            ),
+            defaultFieldSpacer,
+            Container(
+              padding: defaultTextfieldInsets,
+              child: DropdownButton(
+                hint: const Text('Time of day'),
+                value: recordTimeOfDay.value.value,
+                isExpanded: true,
+                items: timesOfDay.map((e) {
+                  return DropdownMenuItem<String>(
+                    value: e,
+                    child: Text(e),
+                  );
+                }).toList(),
+                onChanged: (String? value) {
+                  recordTimeOfDay.value = RecordTimeOfDay.getByValue(value!)!;
+                },
+              ),
             ),
             defaultFieldSpacer,
             TextField(
