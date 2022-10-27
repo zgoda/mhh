@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:mhh/const.dart';
 import 'package:mhh/pages/home.dart';
 import 'package:mhh/pages/newrecording.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+  await Hive.openBox(recordBoxName);
   runApp(const BPRecApp());
 }
 

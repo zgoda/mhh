@@ -1,10 +1,9 @@
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:mhh/const.dart';
 import 'package:mhh/models.dart';
-
-const defaultTextfieldInsets = EdgeInsets.fromLTRB(20, 15, 20, 15);
-const defaultFieldSpacer = SizedBox(height: 25);
 
 class RecordingCreateScreen extends HookWidget {
   const RecordingCreateScreen({super.key});
@@ -26,6 +25,14 @@ class RecordingCreateScreen extends HookWidget {
         actions: <Widget>[
           TextButton(
             onPressed: () async {
+              final record = BloodPressureRecord(
+                date: DateTime.parse(recordDateController.text),
+                timeOfDay: recordTimeOfDay.value,
+                sys: int.parse(recordSysPressureController.text),
+                dia: int.parse(recordDiaPressureController.text),
+                bpm: int.tryParse(recordPulseController.text),
+              );
+              Hive.box(recordBoxName).put(record.key, record);
               Navigator.of(context).pop();
             },
             style: TextButton.styleFrom(
