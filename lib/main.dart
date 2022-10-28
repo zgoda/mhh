@@ -6,7 +6,7 @@ import 'package:mhh/pages/newrecording.dart';
 
 void main() async {
   await Hive.initFlutter();
-  await Hive.openBox(recordBoxName);
+  await Hive.openBox<String>(recordBoxName);
   runApp(const BPRecApp());
 }
 

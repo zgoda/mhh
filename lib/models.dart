@@ -1,4 +1,7 @@
+import 'dart:convert';
 import 'package:equatable/equatable.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:mhh/const.dart';
 
 enum RecordTimeOfDay {
   morning('morning', 1),
@@ -70,4 +73,18 @@ class BloodPressureRecord extends Equatable {
         'dia': dia,
         'bpm': bpm,
       };
+}
+
+class BloodPressureRecordCollection {
+  List<BloodPressureRecord?> fetchCurrentMonth() {
+    final keyPrefix = DateTime.now().toIso8601String().substring(0, 8);
+    final box = Hive.box<String>(recordBoxName);
+    final data = box.keys.map((e) {
+      if (e.toString().startsWith(keyPrefix)) {
+        final item = box.get(e)!;
+        return BloodPressureRecord.fromMap(json.decode(item));
+      }
+    });
+    return data.toList();
+  }
 }
