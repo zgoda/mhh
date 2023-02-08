@@ -18,7 +18,8 @@ class BPRecApp extends StatelessWidget {
     return MaterialApp(
       title: 'Blood Pressure Recordings',
       theme: ThemeData(
-        primarySwatch: Colors.blueGrey,
+        useMaterial3: true,
+        colorSchemeSeed: Colors.blueGrey,
       ),
       home: const HomeScreen(),
       routes: <String, WidgetBuilder>{
