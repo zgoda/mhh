@@ -33,8 +33,9 @@ class RecordingCreateScreen extends HookWidget {
                 dia: int.parse(recordDiaPressureController.text),
                 bpm: int.tryParse(recordPulseController.text),
               );
-              Hive.box<String>(recordBoxName)
+              await Hive.box<String>(recordBoxName)
                   .put(record.key, json.encode(record.toMap()));
+              if (!context.mounted) return;
               Navigator.of(context).pop();
             },
             style: TextButton.styleFrom(
